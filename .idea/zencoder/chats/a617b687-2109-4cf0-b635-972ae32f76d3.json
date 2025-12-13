@@ -1,0 +1,105 @@
+{
+    "checksum": "9954c0f60494569a4160431e48896417040efbb5b61b923f456bbc2c611867fc",
+    "data": {
+    "id": "a617b687-2109-4cf0-b635-972ae32f76d3",
+    "createdAt": 1760788564406,
+    "updatedAt": 1760788589724,
+    "title": "/fix List.of(new SimpleGrantedAuthority(\"ROLE_\"...",
+    "messages": [
+        {
+            "id": "a692f4c1-57e2-467a-b135-9d1b86ce73ec",
+            "role": "user",
+            "content": [
+                {
+                    "type": "command",
+                    "commandName": "fix"
+                },
+                {
+                    "type": "codeSnippet",
+                    "text": "List.of(new SimpleGrantedAuthority(\"ROLE_\" + u.get().getRole().name()))",
+                    "language": "java"
+                },
+                {
+                    "type": "text",
+                    "text": "Usage of API documented as @since 9+"
+                }
+            ],
+            "context": {
+                "currentFile": {
+                    "path": "/home/anurag-dwivedi/Pictures/finance-tracker-starter/backend/src/main/java/com/example/fintrack/security/JwtAuthFilter.java",
+                    "fsPath": "/home/anurag-dwivedi/Pictures/finance-tracker-starter/backend/src/main/java/com/example/fintrack/security/JwtAuthFilter.java",
+                    "content": "package com.example.fintrack.security;\n\nimport com.example.fintrack.model.User;\nimport com.example.fintrack.repository.UserRepository;\nimport jakarta.servlet.FilterChain;\nimport jakarta.servlet.ServletException;\nimport jakarta.servlet.http.HttpServletRequest;\nimport jakarta.servlet.http.HttpServletResponse;\nimport org.springframework.http.HttpHeaders;\nimport org.springframework.security.authentication.UsernamePasswordAuthenticationToken;\nimport org.springframework.security.core.authority.SimpleGrantedAuthority;\nimport org.springframework.security.core.context.SecurityContextHolder;\nimport org.springframework.stereotype.Component;\nimport org.springframework.web.filter.OncePerRequestFilter;\n\nimport java.io.IOException;\nimport java.util.List;\nimport java.util.Optional;\n\n@Component\npublic class JwtAuthFilter extends OncePerRequestFilter {\n\n    private final JwtUtil jwtUtil;\n    private final UserRepository userRepo;\n\n    public JwtAuthFilter(JwtUtil jwtUtil, UserRepository userRepo) {\n        this.jwtUtil = jwtUtil;\n        this.userRepo = userRepo;\n    }\n\n    @Override\n    protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain chain)\n            throws ServletException, IOException {\n\n        String header = req.getHeader(HttpHeaders.AUTHORIZATION);\n        if (header != null && header.startsWith(\"Bearer \")) {\n            String token = header.substring(7);\n            try {\n                String email = jwtUtil.getSubject(token);\n                Optional<User> u = userRepo.findByEmail(email);\n                if (u.isPresent()) {\n                    UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(\n                            email,\n                            null,\n                            List.of(new SimpleGrantedAuthority(\"ROLE_\" + u.get().getRole().name()))\n                    );\n                    SecurityContextHolder.getContext().setAuthentication(auth);\n                }\n            } catch (Exception ignored) {}\n        }\n        chain.doFilter(req, res);\n    }\n}\n",
+                    "language": "java"
+                },
+                "codebaseEnabled": true
+            },
+            "createdAt": 1760788564460,
+            "isInternal": false,
+            "rawContent": {
+                "type": "doc",
+                "content": [
+                    {
+                        "type": "paragraph",
+                        "content": [
+                            {
+                                "type": "command",
+                                "attrs": {
+                                    "label": "fix"
+                                },
+                                "content": [
+                                    {
+                                        "type": "text",
+                                        "text": "fix: "
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "codeBlock",
+                                "attrs": {
+                                    "language": "java"
+                                },
+                                "content": [
+                                    {
+                                        "type": "text",
+                                        "text": "List.of(new SimpleGrantedAuthority(\"ROLE_\" + u.get().getRole().name()))"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "text",
+                                "text": "Usage of API documented as @since 9+"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "autoAppliedRules": []
+        },
+        {
+            "id": "9e609dc7-a508-4cfc-a21e-eb6652deeda2",
+            "role": "system",
+            "content": [
+                {
+                    "type": "errorText",
+                    "text": "Could not establish websocket connection. Please try again later.",
+                    "actions": [
+                        {
+                            "type": "externalAction",
+                            "title": "Regenerate",
+                            "action": "regenerateLastAnswer"
+                        }
+                    ]
+                }
+            ],
+            "createdAt": 1760788589723,
+            "isInternal": false
+        }
+    ],
+    "isAgent": true,
+    "isCustomAgent": false,
+    "isUnitTestsAgent": false,
+    "isE2EAgent": false,
+    "isQnaAgent": false,
+    "isRepoInfoAgent": false
+}
+}

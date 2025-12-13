@@ -1,0 +1,11 @@
+frontend/node_modules
+frontend/dist
+backend/target
+backend/.idea
+backend/.mvn/wrapper/maven-wrapper.jar
+ml-service/.venv
+__pycache__/
+
+.DS_Store
+.env
+*.log

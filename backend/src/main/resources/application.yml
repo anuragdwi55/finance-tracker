@@ -1,0 +1,39 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/fintrack
+    username: finuser
+    password: finpass
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  mail:
+    host: localhost
+    port: 1025
+    username: ""
+    password: ""
+    properties:
+      mail.smtp.auth: false
+      mail.smtp.starttls.enable: false
+  kafka:
+    bootstrap-servers: localhost:9092
+  quartz:
+    job-store-type: memory
+    properties.org.quartz.threadPool.threadCount: 5
+
+app:
+  jwt:
+    secret: "pM6nHZp1oKXgh5M9V9vB1pK7h5Kp5uXl7J9P8lZl7Zw="
+    expirationMinutes: 120
+  ml:
+    baseUrl: "http://localhost:8001"
+  reports:
+    cron: "0 0 9 * * ?"
+  kafka:
+    events-topic: fintrack.events
