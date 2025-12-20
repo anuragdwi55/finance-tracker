@@ -17,7 +17,7 @@ public class CorsConfig {
         cfg.setAllowedOrigins(List.of(
                 "http://localhost:5173",                // local dev
                 "http://localhost:5174",                // used 5174
-                "https://<your-frontend>.vercel.app"    // <-- put your real Vercel URL here
+                "https://finance-tracker-six-tan.vercel.app"
         ));
         cfg.setAllowedMethods(List.of("GET","POST","PUT","DELETE","PATCH","OPTIONS"));
         cfg.setAllowedHeaders(List.of("Authorization","Content-Type"));
