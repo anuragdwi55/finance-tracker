@@ -1,17 +1,22 @@
-import axios, { AxiosRequestHeaders } from 'axios'
+import axios, {
+  AxiosError,
+  AxiosHeaders,
+  InternalAxiosRequestConfig,
+} from 'axios'
 
-const API_BASE = import.meta.env.VITE_API_BASE || '/api'
-const api = axios.create({ baseURL: API_BASE })
+const api = axios.create({
+  baseURL: import.meta.env.VITE_API_BASE ?? '/api',
+})
 
-api.interceptors.request.use((config) => {
+// Attach token safely (Axios v1: headers is AxiosHeaders)
+api.interceptors.request.use((config: InternalAxiosRequestConfig) => {
   const token = localStorage.getItem('token')
   if (token) {
-    // merge safely and keep the type happy
-    const merged: AxiosRequestHeaders = {
-      ...(config.headers as AxiosRequestHeaders || {}),
-      Authorization: `Bearer ${token}`,
+    if (!(config.headers instanceof AxiosHeaders)) {
+      // wrap any existing headers into AxiosHeaders to satisfy TS
+      config.headers = new AxiosHeaders(config.headers)
     }
-    config.headers = merged
+    (config.headers as AxiosHeaders).set('Authorization', `Bearer ${token}`)
   }
   return config
 })
